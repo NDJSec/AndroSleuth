@@ -1,0 +1,32 @@
+{
+    "name": "Crypto Tracer",
+    "Description": "A simple frida script that can trace all instances of 'getInstance' in encryption and hashing algoritm",
+    "frida_script": {
+        "tracer_classes": [
+            "var Cipher = Java.use('javax.crypto.Cipher');",
+            "var MessageDigest = Java.use('java.security.MessageDigest');"
+        ],
+        "tracer_snippets": {
+            "Cipher_trace": [
+                "clazz.getInstance.overload('java.lang.String').implementation = function(instanceType) {",
+                    "console.log('[+] ' + targetClass + '.getInstance called with argument: ' + instanceType);",
+                    "var instance = this.getInstance(instanceType);",
+                    "console.log('[+] Instance obtained: ' + instance);",
+                    "return instance;",
+                "};",
+                "console.log(`[+] Hooked ${targetClass}.getInstance`"
+            ],
+            "Hash_trace": [
+                "MessageDigest.getInstance.overload('java.lang.String').implementation = function(algorithm) {",
+                    "console.log('[+] MessageDigest.getInstance called with algorithm: ' + algorithm);",
+            
+                    "var instance = this.getInstance(algorithm);",
+                    "console.log('[+] MessageDigest instance: ' + instance);",
+                    "return instance;",
+                "};",
+            
+                "console.log('[+] Hooked MessageDigest.getInstance for MD5');"
+            ]
+        }
+    }
+}
