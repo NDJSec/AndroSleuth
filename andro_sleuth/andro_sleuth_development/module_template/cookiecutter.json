@@ -1,0 +1,7 @@
+{
+    "module_name": "crypto_parser",
+    "author_name": "Your name",
+    "description": "A short description of the module",
+    "file_name": "crypto_parser",
+    "frida_script": "frida_script_name"
+}

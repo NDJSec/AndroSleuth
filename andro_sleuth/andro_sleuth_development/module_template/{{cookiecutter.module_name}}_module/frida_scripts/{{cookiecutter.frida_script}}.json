@@ -1,0 +1,20 @@
+{
+    "name": "Example Frida Script",
+    "Description": "Description of script",
+    "frida_script": {
+        "tracer_classes": [
+            "var Cipher = Java.use('CLASS TO TRACE');"
+        ],
+        "tracer_snippets": {
+            "Cipher_trace": [
+                "clazz.getInstance.overload('java.lang.String').implementation = function(instanceType) {",
+                    "console.log('[+] ' + targetClass + '.getInstance called with argument: ' + instanceType);",
+                    "var instance = this.getInstance(instanceType);",
+                    "console.log('[+] Instance obtained: ' + instance);",
+                    "return instance;",
+                "};",
+                "console.log(`[+] Hooked ${targetClass}.getInstance`"
+            ]
+        }
+    }
+}
