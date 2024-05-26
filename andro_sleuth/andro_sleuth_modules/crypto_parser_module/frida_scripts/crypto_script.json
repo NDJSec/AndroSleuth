@@ -8,7 +8,7 @@
         ],
         "tracer_snippets": {
             "Cipher_trace": [
-                "clazz.getInstance.overload('java.lang.String').implementation = function(instanceType) {",
+                "Cipher.getInstance.overload('java.lang.String').implementation = function(instanceType) {",
                     "console.log('[+] ' + targetClass + '.getInstance called with argument: ' + instanceType);",
                     "var instance = this.getInstance(instanceType);",
                     "console.log('[+] Instance obtained: ' + instance);",
