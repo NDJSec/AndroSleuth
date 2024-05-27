@@ -21,8 +21,8 @@ def _parseargs():
 
     module_group = parser.add_argument_group("Modules")
     module_group.add_argument("-a", "--all", help="Run all modules", action="store_true", required=False)
+    module_group.add_argument("-f", "--frida", help="Enable Frida tracing on supported modules", action="store_true", required=False)
     module_group.add_argument("-m", "--mallodroid", help="Run mallodroid module", action="store_true", required=False)
-    module_group.add_argument("-f", "--frida", help="Enable Frida tracing modules", action="store_true", required=False)
     module_group.add_argument("-c", "--crypto", help="Run the Crypto Parser module", action="store_true", required=False)
     args = parser.parse_args()
 
@@ -50,13 +50,18 @@ def main():
     logger.success(f"Analyse file: {_args.input}")
     logger.success(f"Package name: {package_name}")
 
-    packages = get_packages(_dx, package_name)
+    get_packages(_dx, package_name)
     
     if _args.frida:
         frida_script = FridaScript(package_name)
-    if _args.mallodroid:
-       mallodroid((_a, _dx, _d), frida_script) 
-    if _args.crypto:
+    
+    if _args.all:
+        mallodroid((_a, _dx, _d), frida_script) 
+        CryptoPaser(frida_script)
+
+    if _args.mallodroid and not _args.all:
+        mallodroid((_a, _dx, _d), frida_script) 
+    if _args.crypto and not _args.all:
         CryptoPaser(frida_script)
 
 
