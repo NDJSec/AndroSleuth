@@ -3,7 +3,7 @@ import json
 
 class FridaScript:
     def __init__(self, process: str) -> None:
-        self.__process = frida.get_usb_device().attach(process)
+        #self.__process = frida.get_usb_device().attach(process)
         self.__tracer_classes = list[str]
         self.__tracer_snippets = list[str]
         self.__script = None
