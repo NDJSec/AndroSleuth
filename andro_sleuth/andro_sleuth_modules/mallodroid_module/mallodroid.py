@@ -381,7 +381,7 @@ def _store_java(_vm, _args):
         except Exception as e:
             print("Could not process {:s}: {:s}".format(_class.get_name(), str(e)))
 
-def mallodroid(*apk: Union[APK, Analysis, list], frida_script: FridaScript):
+def mallodroid(*apk: Union[APK, Analysis, list], frida_script: Union[FridaScript, None]):
     _a, _vm, _vmx = apk
 
     if 'android.permission.INTERNET' in _a.get_permissions():
