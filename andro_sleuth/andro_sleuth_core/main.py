@@ -3,9 +3,9 @@ import sys
 from androguard.core.analysis.analysis import Analysis
 from androguard.core import apk, dex
 from androguard.decompiler import decompiler
-from androguard.misc import AnalyzeAPK
 from andro_sleuth_modules.package_parse_module.package_parser import get_packages
 from andro_sleuth_modules.crypto_parser_module.crypto_parser import CryptoPaser
+from andro_sleuth_modules.mallodroid_module import mallodroid
 from andro_sleuth_modules.frida_module.frida import FridaScript
 
 from loguru import logger
@@ -13,8 +13,9 @@ from loguru import logger
 logger.remove()
 
 def _parseargs():
-    parser = argparse.ArgumentParser(description="Analyse Android Apps for broken SSL certificate validation.")
+    parser = argparse.ArgumentParser(description="Analyse Android Apps for cryptographic misuse.")
     parser.add_argument("-f", "--file", help="APK File to check", type=str, required=True)
+    parser.add_argument("-m", "--mallodroid", help="Run mallodroid module", action="store_true", required=False)
     parser.add_argument("-j", "--java", help="Show Java code for results for non-XML output", action="store_true", required=False)
     parser.add_argument("-x", "--xml", help="Print XML output", action="store_true", required=False)	
     parser.add_argument("-d", "--dir", help="Store decompiled App's Java code for further analysis in dir", type=str, required=False)
@@ -38,11 +39,15 @@ def main():
 
     print(f"Analyse file: {_args.file}")
     print(f"Package name: {_a.get_package()}")
+    #frida_script = FridaScript(_a.get_package())
 
-    packages = get_packages(_dx)
-    frida_script = FridaScript()
+    packages = get_packages(_dx, _a.get_package())
+
+    '''
+    if _args.mallodroid:
+       mallodroid((_a, _dx, _d), frida_script) 
     CryptoPaser(frida_script)
-
+    '''
 
 
 if __name__ == "__main__":
