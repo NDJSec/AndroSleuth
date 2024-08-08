@@ -1,0 +1,24 @@
+[project]
+name = "andro_sleuth"
+version = "0.1"
+dependencies = [
+    "androguard",
+    "argparse"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "pytest",
+    "pre-commit"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages]
+find = { include = ["andro_sleuth", "andro_sleuth_core", "andro_sleuth_modules", "andro_sleuth_modules.*"] }
+
+[project.scripts]
+AndroSleuth = "andro_sleuth.andro_sleuth_core.__main__:main"

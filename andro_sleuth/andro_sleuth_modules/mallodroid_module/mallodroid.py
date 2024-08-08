@@ -1,7 +1,7 @@
 from androguard.core.analysis.analysis import Analysis
 from androguard.core.apk import APK
 from androguard.decompiler.decompile import DvClass
-from andro_sleuth_modules.frida_module.frida import FridaScript
+from andro_sleuth.andro_sleuth_modules.frida_module.frida import FridaScript
 from typing import Union
 
 import os
@@ -185,7 +185,8 @@ def _check_all(_vm, _vmx):
             if len(_ssl) > 0:
                 _custom_on_received_ssl_error += _ssl
 
-    return { 'trustmanager' : _custom_trust_manager, 'insecuresocketfactory' : _insecure_socket_factory, 'customhostnameverifier' : _custom_hostname_verifier, 'allowallhostnameverifier' : _allow_all_hostname_verifier, 'onreceivedsslerror' : _custom_on_received_ssl_error}
+    return {'trustmanager': _custom_trust_manager, 'insecuresocketfactory': _insecure_socket_factory, 'customhostnameverifier': _custom_hostname_verifier, 'allowallhostnameverifier': _allow_all_hostname_verifier, 'onreceivedsslerror': _custom_on_received_ssl_error}
+
 
 def _print_result(_result, _java=True):
     print("Analysis result:")
@@ -341,24 +342,27 @@ def _xml_result(_a, _result):
             _ss.set('class', _translate_class_name(_ref.get_class_name()))
             _ss.set('method', _ref.get_name())
 
-
     _xml = xml.dom.minidom.parseString(tostring(_result_xml, method="xml"))
     print(_xml.toprettyxml())
+
 
 def _translate_class_name(_class_name):
     _class_name = _class_name[1:-1]
     _class_name = _class_name.replace("/", ".")
     return _class_name
 
+
 def _file_name(_class_name, _base_dir):
     _class_name = _class_name[1:-1]
     _f = os.path.join(_base_dir, _class_name + ".java")
     return _f
 
+
 def _ensure_dir(_d):
     d = os.path.dirname(_d)
     if not os.path.exists(d):
         os.makedirs(d)
+
 
 def _store_java(_vm, _args):
     _vm.create_python_export()
@@ -381,6 +385,7 @@ def _store_java(_vm, _args):
         except Exception as e:
             print("Could not process {:s}: {:s}".format(_class.get_name(), str(e)))
 
+
 def mallodroid(*apk: Union[APK, Analysis, list], frida_script: Union[FridaScript, None]):
     _a, _vm, _vmx = apk
 
@@ -392,7 +397,7 @@ def mallodroid(*apk: Union[APK, Analysis, list], frida_script: Union[FridaScript
 
         _print_result(_result, _java=_args.java)
 
-        #print("Store decompiled Java code in {:s}".format(_args.dir))
-        #_store_java(_vm, _args)
+        # print("Store decompiled Java code in {:s}".format(_args.dir))
+        # _store_java(_vm, _args)
     else:
         print("App does not require INTERNET permission. No need to worry about SSL misuse... Abort!")

@@ -1,6 +1,7 @@
 import frida
 import json
 
+
 class FridaScript:
     def __init__(self, process: str) -> None:
         self.__process = frida.get_usb_device().attach(process)
@@ -14,7 +15,6 @@ class FridaScript:
         self.__tracer_classes.extend(data['frida_script']['tracer_classes'])
         self.__tracer_snippets.extend(data['frida_script']['tracer_snippets'])
 
-    
     def compile_frida_script(self) -> None:
         script_lines = []
         script_lines.append("Java.perform(function () {")
